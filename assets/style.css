@@ -64,3 +64,50 @@ footer nav{display:flex;gap:18px}
   .grid{grid-template-columns:1fr}
   .private{grid-template-columns:1fr}
 }
+
+/* ---- motion: the app's own (rise 14px / .55s, 70ms apart; the spring "pop" curve) ---- */
+:root{--ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.34,1.56,.64,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* the scroll-in version moves with `translate`, so a card's hover lift (`transform`) still works */
+@keyframes riseIn{from{opacity:0;translate:0 24px}to{opacity:1;translate:none}}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes iconIn{from{opacity:0;transform:scale(.6) rotate(-8deg)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes sweep{to{background-size:100% .16em}}
+@keyframes blink{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--hold) 55%,transparent)}60%{box-shadow:0 0 0 7px transparent}}
+@keyframes flip{0%{transform:rotate(0)}60%{transform:rotate(190deg)}100%{transform:rotate(180deg)}}
+@keyframes close{from{transform:translateY(-3.5px)}to{transform:none}}
+
+/* the page opens: the icon pops, the headline rises line by line, "spend" gets underlined, then the widgets arrive */
+.brand img{animation:iconIn .6s var(--pop) both}
+.hero h1 .ln{display:block;animation:rise .6s var(--ease) both;animation-delay:calc(120ms + var(--i)*90ms)}
+.hero h1 em{background:linear-gradient(color-mix(in srgb,var(--tide) 35%,transparent),color-mix(in srgb,var(--tide) 35%,transparent)) no-repeat 0 92%/0 .16em;
+  animation:sweep .7s var(--ease) .75s forwards}
+.rise{animation:rise .55s var(--ease) both;animation-delay:calc(200ms + var(--i)*90ms)}
+.pill i{animation:blink 2.4s ease-out 1.4s infinite}
+.shots img{animation:pop .7s var(--pop) both,bob 7s ease-in-out infinite;animation-delay:calc(450ms + var(--i)*110ms),calc(1.6s + var(--i)*1.3s);
+  transition:box-shadow .3s}
+.shots img:hover{animation-play-state:paused;box-shadow:0 18px 40px rgba(10,30,40,.2)}
+.doc{animation:rise .55s var(--ease) both .1s}
+
+/* features: lift a little on hover; each icon does what it stands for */
+.feat{transition:transform .35s var(--pop),box-shadow .35s,border-color .35s}
+.feat:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(10,30,40,.1);border-color:color-mix(in srgb,var(--tide) 30%,var(--line))}
+.ic svg{transition:transform .5s var(--pop)}
+.feat:hover .ic-log svg{transform:rotate(90deg)}
+.feat:hover .ic-hold svg{animation:flip .8s var(--pop) both}
+.feat:hover .ic-pace svg{transform:rotate(-25deg)}
+.feat:hover .ic-chart svg{transform:scaleY(1.12)}
+.feat:hover .ic-ask svg{transform:translateY(-2px) rotate(-6deg)}
+.feat:hover .ic-widget svg{transform:scale(1.12)}
+
+/* below the fold: cards and the privacy band rise as they scroll in (browsers without scroll timelines just show them) */
+@supports (animation-timeline:view()){
+  .grid .feat,.private,main>h2,.doc h2{animation:riseIn linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  .private .shackle{animation:close linear both;animation-timeline:view();animation-range:entry 40% cover 35%}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .hero h1 em{background-size:100% .16em}
+}
