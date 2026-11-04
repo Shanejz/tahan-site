@@ -111,3 +111,16 @@ footer nav{display:flex;gap:18px}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .hero h1 em{background-size:100% .16em}
 }
+
+/* the policy and the terms: the text can't be selected (the email can) */
+.nocopy .doc{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.nocopy .doc a[href^="mailto:"]{-webkit-user-select:text;user-select:text}
+/* the other language of the terms: a quiet line at the end, folded */
+.other{margin-top:36px;border-top:1px solid var(--line);padding-top:14px}
+.other summary{cursor:pointer;font-size:13px;color:var(--mute);list-style:none;width:max-content}
+.other summary::-webkit-details-marker{display:none}
+.other summary::after{content:'›';display:inline-block;margin-left:5px;transition:transform .25s}
+.other[open] summary::after{transform:rotate(90deg)}
+.other .idv{margin-top:18px}
+.other .idv h1{font-size:26px}
+footer span{max-width:40em}
