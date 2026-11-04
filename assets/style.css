@@ -124,3 +124,5 @@ footer nav{display:flex;gap:18px}
 .other .idv{margin-top:18px}
 .other .idv h1{font-size:26px}
 footer span{max-width:40em}
+/* the legal notices: a second card under the terms, numbered clauses */
+.doc .cl{font-variant-numeric:tabular-nums;margin-right:2px}
